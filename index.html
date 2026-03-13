@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gea Jose - Data Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0e14;
+            --bg-secondary: #131920;
+            --bg-card: #1a1f28;
+            --accent-primary: #00d4aa;
+            --accent-secondary: #00a8cc;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --border: #30363d;
+            --gradient: linear-gradient(135deg, #00d4aa 0%, #00a8cc 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated background grid */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: -1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header/Hero Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .hero-content {
+            width: 100%;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .greeting {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.2s forwards;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
+        }
+
+        .subtitle {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.6s forwards;
+        }
+
+        .hero-description {
+            max-width: 700px;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 1s forwards;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--bg-primary);
+            font-weight: 600;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-primary);
+            border: 2px solid var(--accent-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 40px;
+            height: 2px;
+            background: var(--accent-primary);
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 600;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.1);
+        }
+
+        .skill-category h3 {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -3rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--bg-primary), 0 0 0 6px var(--accent-primary);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .timeline-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-highlights {
+            list-style: none;
+        }
+
+        .timeline-highlights li {
+            padding-left: 1.5rem;
+            position: relative;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .timeline-highlights li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-icon {
+            font-size: 2rem;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .social-link:hover {
+            color: var(--accent-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Scroll Animation */
+        .fade-in-section {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .timeline {
+                padding-left: 2rem;
+            }
+
+            .timeline-marker {
+                left: -2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .social-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+
+    <!-- Hero Section -->
+    <header>
+        <div class="container">
+            <div class="hero-content">
+                <div class="greeting">Hello, I'm</div>
+                <h1>Gea Jose</h1>
+                <div class="subtitle">Data Engineer</div>
+                <p class="hero-description">
+                    I build scalable data pipelines and cloud infrastructure that transform raw data into actionable insights. 
+                    With 5+ years of experience in AWS, Snowflake, and Apache Airflow, I architect solutions that process millions 
+                    of records daily while optimizing for performance and cost.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                    <a href="#projects" class="btn btn-secondary">View Projects</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header fade-in-section">
+                <div class="section-label">Technical Arsenal</div>
+                <h2 class="section-title">Skills & Technologies</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category fade-in-section">
+                    <h3>Languages</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">PySpark</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">Scala</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-section">
+                    <h3>Cloud Platforms</h3>
+                    <div class="skill-tags">
+                        <span class="tag">AWS</span>
+                        <span class="tag">Azure</span>
+                        <span class="tag">GCP</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-section">
+                    <h3>Data Processing</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Apache Airflow</span>
+                        <span class="tag">Apache Kafka</span>
+                        <span class="tag">Apache Spark</span>
+                        <span class="tag">DBT</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-section">
+                    <h3>Databases & Warehouses</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Snowflake</span>
+                        <span class="tag">Redshift</span>
+                        <span class="tag">BigQuery</span>
+                        <span class="tag">PostgreSQL</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-section">
+                    <h3>DevOps & Tools</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Docker</span>
+                        <span class="tag">CI/CD</span>
+                        <span class="tag">Git</span>
+                        <span class="tag">Grafana</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-section">
+                    <h3>Data Modeling</h3>
+                    <div class="skill-tags">
+                        <span class="tag">Star Schema</span>
+                        <span class="tag">Kimball</span>
+                        <span class="tag">Dimensional Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="container">
+            <div class="section-header fade-in-section">
+                <div class="section-label">Career Journey</div>
+                <h2 class="section-title">Experience</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item fade-in-section">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">June 2021 - August 2024</div>
+                    <h3 class="timeline-title">Data Engineer</h3>
+                    <div class="timeline-company">KeyValue Software Systems • India</div>
+                    <ul class="timeline-highlights">
+                        <li>Architected enterprise-scale data pipelines on AWS using Apache Airflow, Python, and PostgreSQL with containerized Docker deployments</li>
+                        <li>Engineered real-time streaming pipeline processing 500K+ IoT events daily using Kafka, PySpark, AWS Glue, and Redshift</li>
+                        <li>Designed dimensional data warehouses following Kimball methodology, building DBT models for Snowflake</li>
+                        <li>Built Python monitoring framework with 15+ Grafana dashboards, reducing MTTD by 60%</li>
+                        <li>Optimized Redshift star/snowflake schemas, reducing average query runtime by 40%</li>
+                        <li>Implemented CI/CD pipelines using AWS CodePipeline, reducing deployment errors by 75%</li>
+                    </ul>
+                </div>
+                <div class="timeline-item fade-in-section">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-date">August 2019 - June 2021</div>
+                    <h3 class="timeline-title">Data Scientist</h3>
+                    <div class="timeline-company">Prevalent AI • India</div>
+                    <ul class="timeline-highlights">
+                        <li>Developed production data pipelines and ML workflows using Apache Spark (Scala) and Python, achieving 10x performance improvement</li>
+                        <li>Led security analytics project ingesting data from 20+ client APIs into PostgreSQL with Tableau dashboards</li>
+                        <li>Created SQL transformation layers with comprehensive validation checks, delivering datasets with 99.9% accuracy</li>
+                        <li>Collaborated with product, analytics, and QA teams through agile development cycles</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header fade-in-section">
+                <div class="section-label">Featured Work</div>
+                <h2 class="section-title">Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card fade-in-section">
+                    <div class="project-header">
+                        <div class="project-icon">📄</div>
+                    </div>
+                    <h3 class="project-title">DocQ - Document Q&A Agent</h3>
+                    <p class="project-description">
+                        Built a RAG-based application that lets users upload PDF documents and ask natural language questions. 
+                        Documents are parsed, chunked, and embedded using sentence-transformers, with vectors stored in ChromaDB 
+                        for semantic retrieval. Implemented MD5 file hashing to cache embeddings, eliminating redundant processing.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tag">Python</span>
+                        <span class="tag">ChromaDB</span>
+                        <span class="tag">RAG</span>
+                        <span class="tag">Google Gemini</span>
+                    </div>
+                </div>
+                <div class="project-card fade-in-section">
+                    <div class="project-header">
+                        <div class="project-icon">🦷</div>
+                    </div>
+                    <h3 class="project-title">DentaFind - AI Clinic Recommender</h3>
+                    <p class="project-description">
+                        Developing an AI agent that takes a user's dental condition as input, searches nearby clinics via 
+                        Google Places API, analyzes patient reviews using NLP sentiment analysis, and recommends the best-matching 
+                        clinic based on data-driven insights.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tag">Python</span>
+                        <span class="tag">NLP</span>
+                        <span class="tag">Google Places API</span>
+                        <span class="tag">Sentiment Analysis</span>
+                    </div>
+                </div>
+                <div class="project-card fade-in-section">
+                    <div class="project-header">
+                        <div class="project-icon">🏨</div>
+                    </div>
+                    <h3 class="project-title">Hotel Rate Data Pipeline</h3>
+                    <p class="project-description">
+                        Architected real-time and batch data pipeline for hotel rate ingestion processing 10M+ records daily. 
+                        Built Kafka streaming pipeline with PySpark transformations, implemented star schema warehouse, 
+                        and reduced processing time by 40% while cutting infrastructure costs by 25%.
+                    </p>
+                    <div class="project-tech">
+                        <span class="tag">Kafka</span>
+                        <span class="tag">PySpark</span>
+                        <span class="tag">Airflow</span>
+                        <span class="tag">Snowflake</span>
+                        <span class="tag">AWS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header fade-in-section">
+                <div class="section-label">Let's Connect</div>
+                <h2 class="section-title">Get in Touch</h2>
+            </div>
+            <div class="contact-content fade-in-section">
+                <p>
+                    I'm currently seeking Data Engineer opportunities in Austin or remote positions across the US. 
+                    Let's talk about building scalable data solutions together.
+                </p>
+                <a href="mailto:geajose425@gmail.com" class="btn btn-primary">Send me an email</a>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/gea-jose" class="social-link" target="_blank">
+                        LinkedIn →
+                    </a>
+                    <a href="https://github.com/geajose" class="social-link" target="_blank">
+                        GitHub →
+                    </a>
+                    <a href="./Gea_Jose_DE.pdf" class="social-link" download>
+                        Resume →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Gea Jose. Built with passion for data engineering.</p>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Fade in sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, observerOptions);
+
+      
